@@ -1,0 +1,54 @@
+state_set:  [0, 1] # wast and east lilypads
+action_set: [0, 1] # stay and jump
+reward_set: [-1, 0, 1, 2]
+
+initial_state_distrib: 
+  0: 1 # prob starting at west lilypad
+  1: 0 # prob starting at east lilypad
+
+state_transition_distrib: # 1-step state transition
+  # (state, action, nextstate): prob of nextstate.
+  0, 0, 0: 0.8
+  0, 0, 1: 0.2
+  0, 1, 0: 0.1
+  0, 1, 1: 0.9
+  1, 0, 0: 0.2
+  1, 0, 1: 0.8
+  1, 1, 0: 0.9
+  1, 1, 1: 0.1
+
+reward_distrib:
+  # (state, action, nextstate, nextreward): prob of nextreward
+  0, 0, 0, -1: 0
+  0, 0, 0,  0: 1
+  0, 0, 0, +1: 0
+  0, 0, 0, +2: 0
+  0, 0, 1, -1: 0
+  0, 0, 1,  0: 0
+  0, 0, 1, +1: 1
+  0, 0, 1, +2: 0
+  0, 1, 0, -1: 0
+  0, 1, 0,  0: 1
+  0, 1, 0, +1: 0
+  0, 1, 0, +2: 0
+  0, 1, 1, -1: 0
+  0, 1, 1,  0: 0
+  0, 1, 1, +1: 1
+  0, 1, 1, +2: 0
+  1, 0, 0, -1: 0
+  1, 0, 0,  0: 1
+  1, 0, 0, +1: 0
+  1, 0, 0, +2: 0
+  1, 0, 1, -1: 0
+  1, 0, 1,  0: 0
+  1, 0, 1, +1: 1
+  1, 0, 1, +2: 0
+  1, 1, 0, -1: 0
+  1, 1, 0,  0: 1
+  1, 1, 0, +1: 0
+  1, 1, 0, +2: 0
+  1, 1, 1, -1: 0
+  1, 1, 1,  0: 0
+  1, 1, 1, +1: 1
+  1, 1, 1, +2: 0
+  

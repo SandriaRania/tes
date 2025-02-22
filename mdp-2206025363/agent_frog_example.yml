@@ -1,0 +1,4 @@
+policy_name: 'coin_tossing'
+
+policy_coin_tossing:
+  head_prob: [0.75, 0.25] # at west and east
