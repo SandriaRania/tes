@@ -1,0 +1,8 @@
+ # Different hardware may yield different random numbers even with the same RNG seed
+seed: 12345
+
+env: !include env_lilypad_example.yml
+agent: !include agent_frog_example.yml
+
+xprmt_episode_length: 100 # in timesteps
+discount_factors: [null, 0.0, 0.5, 0.99] # `null` means the average reward (discounting-free)

@@ -26,36 +26,26 @@ class EnvLilypad():
         return snext
                 
     def sample_nextstate(self, s: int, a: int) -> tuple[int, int]:
-        snext, rnext = None, None
-        ##### Begin: write your code below #####
-        # TODO complete this chunk
-        nstate, probs = zip(*[(k[2], v) for k, v in self.p.items() if k[0] == s and k[1] == a])
-        probs = np.array(probs) / sum(probs)  
-        snext = np.random.choice(nstate, p=probs)
-        rnext = sum(k[3] * v for k, v in self.r.items() if k[0] == s and k[1] == a and k[2] == snext)
-        ##### End of your code #####
-        return snext, rnext # the nextstate and the reward value (instead of the reward idx)
+        next_state_probs = [self.p[(s, a, s_next)] for s_next in range(self.nS)]
+        snext = u.sample_discrete(next_state_probs)
+    
+        reward_probs = [self.r[(s, a, snext, r)] for r in self.R]
+        reward_index = u.sample_discrete(reward_probs)
+        rnext = self.R[reward_index]
+    
+        return snext, rnext
+
     
     def get_reward_mat(self) -> np.ndarray:
         r_mat = np.full((self.nS, self.nA), np.nan)
-        ##### Begin: write your code below #####
-        # TODO complete this chunk
-        r_mat = np.zeros((self.nS, self.nA))
-        for s in self.S:
-            for a in self.A:
-                exp_reward = 0.0  
+        
+        for s in range(self.nS):
+            for a in range(self.nA):
+                expected_reward = 0.0
+                for s_next in range(self.nS):
+                    reward_given_sas = sum(r * self.r[(s, a, s_next, r)] for r in self.R)
+                    expected_reward += self.p[(s, a, s_next)] * reward_given_sas
+                r_mat[s, a] = expected_reward
 
-                for s_next in self.S:  
-                    exp_r = 0.0  
-
-                    for r_val in self.R: 
-                        key = (s, a, s_next, r_val)
-                        if key in self.r:
-                            exp_r += r_val * self.r[key] 
-
-                    if (s, a, s_next) in self.p:  
-                        exp_reward += self.p[(s, a, s_next)] * exp_r  
-            r_mat[s, a] = exp_reward
-        ##### End of your code #####
         return r_mat
     
